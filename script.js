@@ -16,7 +16,7 @@
 
 
 //* as before, paste your lnk below
-let URL = "https://teachablemachine.withgoogle.com/models/rER1kyBfc/";
+let URL = "https://teachablemachine.withgoogle.com/models/m8Wm3jRiN/";
 
 
 
