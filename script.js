@@ -7,8 +7,16 @@
 
 // Model URL from Teachable Machine
 //**************************************************
+
+//new
+//https://teachablemachine.withgoogle.com/models/rER1kyBfc/
+
+//orig
+//https://teachablemachine.withgoogle.com/models/m8Wm3jRiN/
+
+
 //* as before, paste your lnk below
-let URL = "paste your link here";
+let URL = "https://teachablemachine.withgoogle.com/models/rER1kyBfc/";
 
 
 
