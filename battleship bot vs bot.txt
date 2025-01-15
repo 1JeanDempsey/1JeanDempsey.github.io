@@ -1,0 +1,1171 @@
+//implementation
+let ballX = 20;
+let inc = 20;
+let forward = true;
+
+//ships will hold thieir 1D square numbers
+let ship1 = [0, 0, 0, 0, 0];
+let ship2 = [0, 0, 0, 0];
+let ship3 = [0, 0, 0];
+let ship4 = [0, 0, 0];
+let ship5 = [0, 0];
+let ship1down = [-1, -1, -1, -1, -1];
+let ship2down = [-1, -1, -1, -1];
+let ship3down = [-1, -1, -1];
+let ship4down = [-1, -1, -1];
+let ship5down = [-1, -1];
+let S1 = false;
+let S2 = false;
+let S3 = false;
+let S4 = false;
+let S5 = false;
+
+let shipA = [0, 0, 0, 0, 0];
+let shipB = [0, 0, 0, 0];
+let shipC = [0, 0, 0];
+let shipD = [0, 0, 0];
+let shipE = [0, 0];
+let shipAdown = [-1, -1, -1, -1, -1];
+let shipBdown = [-1, -1, -1, -1];
+let shipCdown = [-1, -1, -1];
+let shipDdown = [-1, -1, -1];
+let shipEdown = [-1, -1];
+let SA = false;
+let SB = false;
+let SC = false;
+let SD = false;
+let SE = false;
+
+function shipReport1(sqr) {
+  if (ship1.indexOf(sqr) != -1) {
+    ship1down[ship1.indexOf(sqr)] = sqr;
+    console.log("ship1hit");
+  }
+  if (ship2.indexOf(sqr) != -1) {
+    ship2down[ship2.indexOf(sqr)] = sqr;
+    console.log("ship2hit");
+  }
+  if (ship3.indexOf(sqr) != -1) {
+    ship3down[ship3.indexOf(sqr)] = sqr;
+    console.log("ship3hit");
+  }
+  if (ship4.indexOf(sqr) != -1) {
+    ship4down[ship4.indexOf(sqr)] = sqr;
+    console.log("ship4hit");
+  }
+  if (ship5.indexOf(sqr) != -1) {
+    ship5down[ship5.indexOf(sqr)] = sqr;
+    console.log("ship5hit");
+    console.log("ship5down= " + ship5down);
+    console.log("ship5= " + ship5);
+  }
+  if (ship1down.indexOf(-1) == -1) {
+    S1 = true;
+    console.log("ship1sunk");
+    plotSunkenShipsGrid(ship1, grid1Hits);
+  }
+  if (ship2down.indexOf(-1) == -1) {
+    S2 = true;
+    console.log("ship2sunk");
+    plotSunkenShipsGrid(ship2, grid1Hits);
+  }
+  if (ship3down.indexOf(-1) == -1) {
+    S3 = true;
+    console.log("ship3sunk");
+    plotSunkenShipsGrid(ship3, grid1Hits);
+  }
+  if (ship4down.indexOf(-1) == -1) {
+    S4 = true;
+    console.log("ship4sunk");
+    plotSunkenShipsGrid(ship4, grid1Hits);
+  }
+  if (ship5down.indexOf(-1) == -1) {
+    S5 = true;
+    console.log("ship5sunk");
+    plotSunkenShipsGrid(ship5, grid1Hits);
+  }
+} //sr1
+function shipReport2(sqr) {
+  console.log("shipreport2 received "+sqr)
+  if (shipA.indexOf(sqr) != -1) {
+    shipAdown[shipA.indexOf(sqr)] = sqr;
+    console.log("shipAhit");
+  }
+  if (shipB.indexOf(sqr) != -1) {
+    shipBdown[shipB.indexOf(sqr)] = sqr;
+    console.log("shipBhit");
+  }
+  if (shipC.indexOf(sqr) != -1) {
+    shipCdown[shipC.indexOf(sqr)] = sqr;
+    console.log("shipChit");
+  }
+  if (shipD.indexOf(sqr) != -1) {
+    shipDdown[shipD.indexOf(sqr)] = sqr;
+    console.log("shipDhit");
+  }
+  if (shipE.indexOf(sqr) != -1) {
+    shipEdown[shipE.indexOf(sqr)] = sqr;
+    console.log("shipEhit");
+  }
+  if (shipAdown.indexOf(-1) == -1) {
+    S1 = true;
+    console.log("shipAsunk");
+    plotSunkenShipsGrid(shipA, grid2Hits);
+  }
+  if (shipBdown.indexOf(-1) == -1) {
+    S2 = true;
+    console.log("shipBsunk");
+    plotSunkenShipsGrid(shipB, grid2Hits);
+  }
+  if (shipCdown.indexOf(-1) == -1) {
+    S3 = true;
+    console.log("shipCsunk");
+    plotSunkenShipsGrid(shipC, grid2Hits);
+  }
+  if (shipDdown.indexOf(-1) == -1) {
+    S4 = true;
+    console.log("shipDsunk");
+    plotSunkenShipsGrid(shipD, grid2Hits);
+  }
+  if (shipEdown.indexOf(-1) == -1) {
+    S5 = true;
+    console.log("shipEsunk");
+    plotSunkenShipsGrid(shipE, grid2Hits);
+  }
+} //sr2
+
+//s: ship, g: grid1Hits
+
+function plotSunkenShipsGrid(s, g) {
+  for (let i = 0; i < s.length; i++) {
+    let c = toCol(s[i]);
+    let r = toRow(s[i]);
+    g[c][r] = "X";
+  }
+}
+/*
+//maybeNotNecessary...
+function plotSunkenShipsGrid2(s, g) {
+  for (let i = 0; i < s.length; i++) {
+    let c = toCol(s[i]);
+    let r = toRow(s[i]);
+    g[c][r] = "X";
+  }
+}
+*/
+let ships1through5 = [];
+let shipsAthroughE = [];
+
+let showShips1 = false;
+let showShips2 = false;
+
+//let missileFired = false;
+let missileFiredSquares2 = [];
+let missileFiredSquares1 = [];
+let numberOf1sFired = 0;
+let numberOf2sFired = 0;
+
+let missileFiredCount = 0;
+
+//number of ships
+let shipFitCount = 0;
+let shipFitCount2 = 0;
+
+//directions, E, N, W, S
+let dirX = [1, 0, -1, 0];
+let dirY = [0, 1, 0, -1];
+
+//grid1 used for placement 10 by 10
+let grid1 = [];
+let grid2 = [];
+let grid1Hits = [];
+let grid2Hits = [];
+for (let i = 0; i < 10; i++) {
+  grid1[i] = [];
+  grid2[i] = [];
+  grid1Hits[i] = [];
+  grid2Hits[i] = [];
+}
+
+//set all values to 0
+//value 1 means occupied
+function initGrid(x) {
+  for (let i = 0; i < 10; i++) {
+    for (let j = 0; j < 10; j++) {
+      x[i][j] = 0;
+    }
+  }
+}
+
+function initHitGrid(x) {
+  for (let i = 0; i < 10; i++) {
+    for (let j = 0; j < 10; j++) {
+      x[i][j] = "O";
+    }
+  }
+}
+
+/*
+  if (missileFiredCount != 0) {
+    if (missileFiredCount % 2 == 0) {
+      impacts2(missileFiredSquares2);
+     
+    } //mf
+    else {
+      impacts1(missileFiredSquares1);
+      
+    }
+  }
+*/
+//see above the context in which
+//impacts1 is called
+function impacts1(x) {
+  console.log("impacts 2");
+  // missileFiredCount++
+
+  while (true) {
+    //console.log("hi");
+    let shotSquare = round(random() * 99);
+
+    if (x.length > 0) {
+      if (x.indexOf(shotSquare) == -1) {
+        console.log("hi");
+        x[numberOf1sFired] = shotSquare;
+        numberOf1sFired++;
+        shipReport1(shotSquare);
+
+        break;
+      } //if
+    } //big if
+    else {
+      x[0] = shotSquare;
+      numberOf1sFired = 1;
+      console.log("*********************");
+      break;
+    } //else
+  } //while
+  missileFiredCount++;
+
+  for (let i = 0; i < missileFiredSquares1.length; i++) {
+    let a = toCol(missileFiredSquares1[i]);
+    let b = toRow(missileFiredSquares1[i]);
+    if (ships1through5.indexOf(missileFiredSquares1[i]) != -1) {
+      if (grid1Hits[a][b] != "X") {
+        grid1Hits[a][b] = "H";
+      }
+    } else {
+      grid1Hits[a][b] = "M";
+    }
+  }
+
+  //consoleOutput(grid1Hits);
+} //impacts1
+function impacts2(x) {
+  console.log("impacts 2");
+  // missileFiredCount++
+
+  while (true) {
+    //console.log("hi");
+    let shotSquare = round(random() * 99);
+
+    if (x.length > 0) {
+      if (x.indexOf(shotSquare) == -1) {
+        console.log("hi");
+        x[numberOf2sFired] = shotSquare;
+        numberOf2sFired++;
+        shipReport2(shotSquare);
+
+        break;
+      } //if
+    } //big if
+    else {
+      x[0] = shotSquare;
+      numberOf2sFired = 1;
+      console.log("*********************");
+      break;
+    } //else
+  } //while
+  missileFiredCount++;
+
+  for (let i = 0; i < missileFiredSquares2.length; i++) {
+    let a = toCol(missileFiredSquares2[i]);
+    let b = toRow(missileFiredSquares2[i]);
+    if (shipsAthroughE.indexOf(missileFiredSquares2[i]) != -1) {
+      if (grid2Hits[a][b] != "X") {
+        grid2Hits[a][b] = "H";
+      }
+    } else {
+      grid2Hits[a][b] = "M";
+    }
+  }
+
+  consoleOutput(grid2Hits);
+} //impacts2
+
+
+function load1thru5intoOne(x) {
+  //passed as let ships1through5 = [];
+  for (let i = 0; i < 5; i++) {
+    x[i] = ship1[i];
+  }
+
+  for (let i = 5; i < 9; i++) {
+    x[i] = ship2[i - 5];
+  }
+
+  for (let i = 9; i < 12; i++) {
+    x[i] = ship3[i - 9];
+  }
+
+  for (let i = 12; i < 15; i++) {
+    x[i] = ship4[i - 12];
+  }
+
+  for (let i = 15; i < 17; i++) {
+    x[i] = ship5[i - 15];
+  }
+}
+function loadAthruEintoOne(x) {
+  //passed as let ships1through5 = [];
+  for (let i = 0; i < 5; i++) {
+    x[i] = shipA[i];
+  }
+
+  for (let i = 5; i < 9; i++) {
+    x[i] = shipB[i - 5];
+  }
+
+  for (let i = 9; i < 12; i++) {
+    x[i] = shipC[i - 9];
+  }
+
+  for (let i = 12; i < 15; i++) {
+    x[i] = shipD[i - 12];
+  }
+
+  for (let i = 15; i < 17; i++) {
+    x[i] = shipE[i - 15];
+  }
+}
+
+function setup() {
+  clearShips1();
+  clearShips2();
+  //console.log("here");
+  //console.log(dirX[0] + dirY[1]);
+  createCanvas(1400, 700);
+  bg = loadImage("water.jpg");
+
+  initGrid(grid1);
+  initGrid(grid2);
+
+  initHitGrid(grid1Hits);
+  initHitGrid(grid2Hits);
+
+  //consoleOutput(grid1Hits);
+  //consoleOutput(grid2Hits);
+
+  findShipLocation();
+  findShipLocation2();
+
+  //console.log("noDups1()= " + noDups1());
+
+  //grid1[3][8]=9
+  //print("grid1[3][8]=  " + grid1[3][8]);
+  //consoleOutput(grid1);
+
+  //****************************************//
+  //*                                      *//
+  //*             button stuff             *//
+  //*                                      *//
+  //****************************************//
+
+  inputRow = createInput();
+  inputRow.position(145, 620, (width = "52"));
+  inputRow.size(30, 30);
+  inputRow.style("font-weight", "10");
+  inputRow.style("font-size", "20px");
+  inputRow.style("text-align", "center");
+
+  inputCol = createInput();
+  inputCol.position(257, 620, (width = "52"));
+  inputCol.size(30, 30);
+  inputCol.style("font-weight", "10");
+  inputCol.style("font-size", "20px");
+  inputCol.style("text-align", "center");
+
+  button = createButton("fire!");
+  button.position(350, 620, (width = "52"));
+  button.size(100, 30);
+  button.style("font-weight", "10");
+  button.style("font-size", "20px");
+  button.style("text-align", "center");
+
+  button.style("background-color", "rgb(231,108,108)");
+  button.style("font-color", "red");
+  button.mouseClicked(fireMissile);
+
+  load1thru5intoOne(ships1through5);
+  loadAthruEintoOne(shipsAthroughE);
+  //console.log(ships1through5);
+  console.log("shipsAthroughE= " + shipsAthroughE);
+  console.log("shipA= " + shipA);
+  console.log("shipB= " + shipB);
+  console.log("shipC= " + shipC);
+  console.log("shipD= " + shipD);
+  console.log("shipE= " + shipE);
+}
+
+function draw() {
+  //stroke("white");
+  background(bg);
+  layout1();
+  layout2();
+  if (showShips1) {
+    fill("yellow");
+    placeShip(ship1);
+    fill("green");
+    placeShip(ship2);
+    fill("purple");
+    placeShip(ship3);
+    fill("blue");
+    placeShip(ship4);
+    fill("red");
+    placeShip(ship5);
+  } //if
+  else {
+    clearShips1();
+    initGrid(grid1);
+    ShipFitCount = 0;
+    showShips1 = false; //<---
+    findShipLocation();
+
+    ////console.log('#########################################################')
+  }
+
+  if (showShips2) {
+    fill("yellow");
+    placeShip2(shipA);
+    fill("green");
+    placeShip2(shipB);
+    fill("purple");
+    placeShip2(shipC);
+    fill("blue");
+    placeShip2(shipD);
+    fill("red");
+    placeShip2(shipE);
+  } //if
+  else {
+    clearShips2();
+    initGrid(grid2);
+    ShipFitCount2 = 0;
+    showShips2 = false;
+    findShipLocation2();
+  }
+
+  ShipFitCount = 0;
+  ShipFitCount2 = 0;
+
+  fill("blue");
+  stroke("blue");
+  text("row", 100, 643);
+  text("col", 220, 643);
+
+  //**************************
+
+  ballX += inc;
+  fill("yellow");
+  circle(ballX, 20, 5);
+  if (ballX > 400 && forward) {
+    forward = false;
+    inc *= -1;
+    impacts2(missileFiredSquares2);
+  }
+  if (ballX < 0 && forward == false) {
+    inc *= -1;
+    forward = true;
+    console.log("hello");
+    impacts1(missileFiredSquares1);
+  }
+
+  /*  
+  if (missileFiredCount != 0) {
+    if (missileFiredCount % 2 == 0) {
+      impacts2(missileFiredSquares2);
+    } //mf
+    else {
+      impacts1(missileFiredSquares1);
+    }
+  }
+*/
+  outputShot2(missileFiredSquares2);
+  outputShot1(missileFiredSquares1);
+} ///draw
+/*
+function draw() {
+  //stroke("white");
+  background(bg);
+  layout1();
+  layout2();
+  if (showShips1) {
+    fill("yellow");
+    placeShip(ship1);
+    fill("green");
+    placeShip(ship2);
+    fill("purple");
+    placeShip(ship3);
+    fill("blue");
+    placeShip(ship4);
+    fill("red");
+    placeShip(ship5);
+  } //if
+  else {
+    clearShips1();
+    initGrid(grid1);
+    ShipFitCount = 0;
+    showShips1 = false; //<---
+    findShipLocation();
+
+    ////console.log('#########################################################')
+  }
+
+  if (showShips2) {
+    fill("yellow");
+    placeShip2(shipA);
+    fill("green");
+    placeShip2(shipB);
+    fill("purple");
+    placeShip2(shipC);
+    fill("blue");
+    placeShip2(shipD);
+    fill("red");
+    placeShip2(shipE);
+  } //if
+  else {
+    clearShips2();
+    initGrid(grid2);
+    ShipFitCount2 = 0;
+    showShips2 = false;
+    findShipLocation2();
+  }
+
+  ShipFitCount = 0;
+  ShipFitCount2 = 0;
+
+  fill("blue");
+  stroke("blue");
+  text("row", 100, 643);
+  text("col", 220, 643);
+  if (missileFiredCount != 0) {
+    if (missileFiredCount % 2 == 0) {
+      impacts2(missileFiredSquares2);
+    } //mf
+    else {
+      impacts1(missileFiredSquares1);
+    }
+  }
+
+  outputShot2(missileFiredSquares2);
+  outputShot1(missileFiredSquares1);
+} ///draw
+*/
+
+function fireMissile() {
+  noLoop();
+  /*
+  //missleFired = true;
+
+  missileFiredCount += 1;
+
+  let temp = colRowToNum(int(inputCol.value()), int(inputRow.value()));
+
+  missileFiredSquares2[missileFiredCount - 1] = temp;
+  */
+} //fm
+
+/*
+function impacts2(x) {
+  for (let i = 0; i < x.length; i++) {
+    let a = int(toCol(x[i]));
+    let b = toRow(x[i]);
+    fill("pink");
+    circle(75 + 700 + 50 * int(a), 75 + 50 * b, 30);
+  }
+} //impacts2
+*/
+/*
+function outputShot2(x) {
+  for (let i = 0; i < x.length; i++) {
+    let a = int(toCol(x[i]));
+    let b = toRow(x[i]);
+    fill("pink");
+    circle(75 + 700 + 50 * int(a), 75 + 50 * b, 30);
+  } //for i
+} //osp
+*/
+function outputShot1(x) {
+  for (let i = 0; i < x.length; i++) {
+    let a = int(toCol(x[i]));
+    let b = int(toRow(x[i]));
+    if (ships1through5.indexOf(x[i]) != -1) {
+      fill("red");
+      //grid1Hits [a][b]='H'
+    } else {
+      fill("pink");
+      //grid1Hits [a][b]='M'
+    }
+    //*******************************************
+    circle(125 + 50 * int(a), 125 + 50 * b, 30);
+  } //for i
+} //osb
+function outputShot2(x) {
+  for (let i = 0; i < x.length; i++) {
+    let a = int(toCol(x[i]));
+    let b = int(toRow(x[i]));
+    if (shipsAthroughE.indexOf(x[i]) != -1) {
+      fill("red");
+      //grid1Hits [a][b]='H'
+    } else {
+      fill("pink");
+      //grid1Hits [a][b]='M'
+    }
+    //*******************************************
+    circle(125 + 50 * int(a)+700, 125 + 50 * b, 30);
+    //circle(75 + 700 + 50 * int(a), 75 + 50 * b, 30);
+  } //for i
+} //os2
+
+//clearShips picks up all
+//ship squares and places them in
+//one array
+function clearShips1() {
+  for (let i = 0; i < 5; i++) {
+    ship1[i] = 0;
+  }
+  for (let i = 0; i < 4; i++) {
+    ship2[i] = 0;
+  }
+  for (let i = 0; i < 3; i++) {
+    ship3[i] = 0;
+    ship4[i] = 0;
+  }
+  for (let i = 0; i < 2; i++) {
+    ship5[i] = 0;
+  }
+}
+function clearShips2() {
+  for (let i = 0; i < 5; i++) {
+    shipA[i] = 0;
+  }
+  for (let i = 0; i < 4; i++) {
+    shipB[i] = 0;
+  }
+  for (let i = 0; i < 3; i++) {
+    shipC[i] = 0;
+    shipD[i] = 0;
+  }
+  for (let i = 0; i < 2; i++) {
+    shipE[i] = 0;
+  }
+}
+//checks for duplicates
+//to ensure ships do not write over each other
+function noDups1() {
+  let temp = [];
+  for (let i = 0; i < 5; i++) {
+    temp[i] = ship1[i];
+  }
+  for (let i = 0; i < 4; i++) {
+    if (temp.indexOf(ship2[i]) != -1) {
+      return false;
+    }
+  }
+  for (let i = 5; i < 9; i++) {
+    temp[i] = ship2[i - 5];
+  }
+  for (let i = 0; i < 3; i++) {
+    if (temp.indexOf(ship3[i]) != -1) {
+      return false;
+    }
+  }
+  //temp.push(ship3);
+  for (let i = 9; i < 12; i++) {
+    temp[i] = ship3[i - 9];
+  }
+
+  for (let i = 0; i < 3; i++) {
+    if (temp.indexOf(ship4[i]) != -1) {
+      return false;
+    }
+  }
+  //temp.push(ship4);
+  for (let i = 12; i < 15; i++) {
+    temp[i] = ship4[i - 12];
+  }
+
+  for (let i = 0; i < 2; i++) {
+    if (temp.indexOf(ship5[i]) != -1) {
+      return false;
+    }
+  }
+
+  return true;
+}
+function noDups2() {
+  let temp = [];
+  for (let i = 0; i < 5; i++) {
+    temp[i] = shipA[i];
+  }
+  for (let i = 0; i < 4; i++) {
+    if (temp.indexOf(shipB[i]) != -1) {
+      return false;
+    }
+  }
+  for (let i = 5; i < 9; i++) {
+    temp[i] = shipB[i - 5];
+  }
+  for (let i = 0; i < 3; i++) {
+    if (temp.indexOf(shipC[i]) != -1) {
+      return false;
+    }
+  }
+  //temp.push(ship3);
+  for (let i = 9; i < 12; i++) {
+    temp[i] = shipC[i - 9];
+  }
+
+  for (let i = 0; i < 3; i++) {
+    if (temp.indexOf(shipD[i]) != -1) {
+      return false;
+    }
+  }
+  //temp.push(ship4);
+  for (let i = 12; i < 15; i++) {
+    temp[i] = shipD[i - 12];
+    ////console.log('*temp= '+temp)
+  }
+
+  for (let i = 0; i < 2; i++) {
+    if (temp.indexOf(shipE[i]) != -1) {
+      return false;
+    }
+  }
+
+  ////console.log(temp);
+  return true;
+}
+
+//randomly picks square 0-99
+function pick99() {
+  return floor(100 * random());
+}
+
+//return column corresponding to
+//square 0-99
+function toCol(x) {
+  return x % 10;
+}
+
+//return row corresponding to
+//square 0-99
+function toRow(x) {
+  return floor(x / 10);
+}
+
+//return appropriate square
+//given row and column
+function colRowToNum(c, r) {
+  return int(r * 10 + c);
+}
+
+//size of boat as we place them sequentially
+//thought/hoped this would make things less cluttered
+function boatSize(n) {
+  if (n == 0) {
+    return 5;
+  }
+  if (n == 1) {
+    return 4;
+  }
+  if (n == 2 || n == 3) {
+    return 3;
+  }
+  if (n == 4) {
+    return 2;
+  }
+}
+
+//Once a ship has been placed we must assign the square number to
+//its list values.  They should be output to the console
+function setShipCoordinates(a, startSquare, x, y) {
+  for (let i = 0; i < a.length; i++) {
+    //colRowToNum(c,r)
+    let b = int(toCol(startSquare) + i * x);
+    let c = int(toRow(startSquare) + i * y);
+    let temp = colRowToNum(b, c);
+
+    a[i] = temp;
+
+    //grid1[toCol(temp)][toRow(temp)] = 1;
+    grid1[b][c] = 1;
+  }
+  //console.log(a.length);
+  //consoleOutput(grid1);
+}
+
+//Once a ship has been placed we must assign the square number to
+//its list values.  They should be output to the console
+function setShipCoordinates2(a, startSquare, x, y) {
+  let nudge = 700;
+  for (let i = 0; i < a.length; i++) {
+    //colRowToNum(c,r)
+    let b = int(toCol(startSquare) + i * x);
+    let c = int(toRow(startSquare) + i * y);
+    let temp = colRowToNum(b, c);
+
+    a[i] = temp;
+
+    //grid1[toCol(temp)][toRow(temp)] = 1;
+    grid2[b][c] = 1;
+  }
+  //console.log(a.length);
+  //consoleOutput(grid1);
+}
+
+//outputs grid to console if you need it
+//this was used extensively early on
+//for error checking
+function consoleOutput(x) {
+  for (var i = 0; i < 10; i++) {
+    print(
+      i +
+        ": " +
+        x[0][i] +
+        " " +
+        x[1][i] +
+        " " +
+        x[2][i] +
+        " " +
+        x[3][i] +
+        " " +
+        x[4][i] +
+        " " +
+        x[5][i] +
+        " " +
+        x[6][i] +
+        " " +
+        x[7][i] +
+        " " +
+        x[8][i] +
+        " " +
+        x[9][i] +
+        " "
+    );
+  } //endfor
+} //consoleoutput
+
+//This is the big one.  Places all 5 ships randomly. Things
+//considered were no ovelapping, staying on the grid1 (why I have both 2D and //1D), random direction. It fits the largest ship (ship1) and works its way
+//through the fleet incrementing shipFitCount
+function findShipLocation() {
+  //noLoop()
+  //return 1
+  let looking;
+  let duplicates = true;
+
+  while (shipFitCount < 5 && duplicates) {
+    let temp1 = pick99();
+
+    let row1 = toRow(temp1);
+    let col1 = toCol(temp1);
+
+    looking = true;
+
+    if (grid1[col1][row1] == 0) {
+      let tempRow1 = row1;
+      let tempCol1 = col1;
+      let j = pick99() + 1;
+      for (let q = 0; q < 4; q++) {
+        j += q;
+        j %= 4;
+        if (looking == false) {
+          break;
+        }
+        //for (let k = 0; k <= boatSize(shipFitCount); k++) {
+        for (let k = 0; k < boatSize(shipFitCount); k++) {
+          if (looking == false) {
+            break;
+          }
+
+          if (
+            int(tempRow1 + dirY[j]) < 10 &&
+            int(tempRow1 + dirY[j]) >= 0 &&
+            int(tempCol1 + dirX[j]) < 10 &&
+            int(tempCol1 + dirX[j]) >= 0 &&
+            grid1[int(tempCol1 + dirX[j])][int(tempRow1 + dirY[j])] == 0
+          ) {
+            tempCol1 = int(tempCol1 + dirX[j]);
+            tempRow1 = int(tempRow1 + dirY[j]);
+
+            if (k == boatSize(shipFitCount) - 1) {
+              if (shipFitCount == 0) {
+                setShipCoordinates(
+                  ship1,
+                  colRowToNum(col1, row1),
+                  dirX[j],
+                  dirY[j]
+                );
+              }
+              if (shipFitCount == 1) {
+                setShipCoordinates(
+                  ship2,
+                  colRowToNum(col1, row1),
+                  dirX[j],
+                  dirY[j]
+                );
+              }
+              if (shipFitCount == 2) {
+                setShipCoordinates(
+                  ship3,
+                  colRowToNum(col1, row1),
+                  dirX[j],
+                  dirY[j]
+                );
+              }
+              if (shipFitCount == 3) {
+                setShipCoordinates(
+                  ship4,
+                  colRowToNum(col1, row1),
+                  dirX[j],
+                  dirY[j]
+                );
+              }
+              if (shipFitCount == 4) {
+                setShipCoordinates(
+                  ship5,
+                  colRowToNum(col1, row1),
+                  dirX[j],
+                  dirY[j]
+                );
+              }
+              shipFitCount++;
+
+              looking = false;
+            }
+          } //if we can
+          //else {
+          // break;
+          //}
+        } //for k
+      } //for j
+    } //if spot available
+
+    if (shipFitCount == 5) {
+      if (noDups1() == true) {
+        duplicates = false;
+        showShips1 = true;
+      } else {
+        showShips1 = false;
+        shipFitCount = 0;
+        duplicates = true;
+        break;
+      }
+    }
+  } //while
+  //shipFitCount = 0;
+
+  shipFitCount = 0;
+} //fsl
+
+function placeShip(ship) {
+  for (let i = 0; i < ship.length; i++) {
+    let squareX = 100 + toCol(ship[i]) * 50;
+    let squareY = 100 + toRow(ship[i]) * 50;
+    square(squareX, squareY, 50);
+  }
+}
+
+function placeShip2(ship) {
+  let nudge = 700;
+  for (let i = 0; i < ship.length; i++) {
+    let squareX = 100 + nudge + toCol(ship[i]) * 50;
+    let squareY = 100 + toRow(ship[i]) * 50;
+    square(squareX, squareY, 50);
+  }
+}
+
+function layout1() {
+  stroke("white");
+  fill("white");
+
+  rect(0, 0, 50, 700);
+  rect(0, 0, 600, 50);
+  rect(600, 0, 150, 700);
+  rect(0, 600, 700, 100);
+  strokeWeight(1);
+  for (let i = 0; i < 12; i++) {
+    line(50, 50 + 50 * i, 600, 50 + 50 * i);
+  } //for i
+  for (let i = 0; i < 11; i++) {
+    line(50 + 50 * i, 50, 50 + 50 * i, 600);
+  } //for i
+  strokeWeight(1);
+  for (let i = 0; i < 10; i++) {
+    stroke("blue");
+    fill("blue");
+    c = unchar("A");
+
+    textSize(21);
+
+    text(char(c + i), 70, 127 + i * 50);
+    if (i < 9) {
+      text(i + 1, 120 + i * 50, 79);
+    } else {
+      text(i + 1, 113 + i * 50, 79);
+    }
+  }
+  stroke("white");
+}
+
+function layout2() {
+  let nudge = 700;
+  stroke("white");
+  fill("white");
+
+  //rect(nudge, 0, 50+nudge, 700);
+  rect(nudge, 0, 600 + nudge, 50);
+  rect(600 + nudge, 0, 150 + nudge, 700);
+  rect(nudge, 600, 700 + nudge, 100);
+  strokeWeight(1);
+  for (let i = 0; i < 12; i++) {
+    line(50 + nudge, 50 + 50 * i, 600 + nudge, 50 + 50 * i);
+  } //for i
+  for (let i = 0; i < 11; i++) {
+    line(50 + nudge + 50 * i, 50, 50 + nudge + 50 * i, 600);
+  } //for i
+  strokeWeight(1);
+  for (let i = 0; i < 10; i++) {
+    stroke("blue");
+    fill("blue");
+    c = unchar("A");
+
+    textSize(21);
+
+    text(char(c + i), 70 + nudge, 127 + i * 50);
+    if (i < 9) {
+      text(i + 1, 120 + nudge + i * 50, 79);
+    } else {
+      text(i + 1, 113 + nudge + i * 50, 79);
+    }
+  }
+  stroke("white");
+}
+
+function findShipLocation2() {
+  //noLoop()
+  //return 1
+  let looking;
+  let duplicates = true;
+
+  while (shipFitCount2 < 5 && duplicates) {
+    //noLoop()
+    let temp1 = pick99();
+    let temp2 = pick99();
+    let row1 = toRow(temp1);
+    let col1 = toCol(temp1);
+
+    looking = true;
+
+    if (grid2[col1][row1] == 0) {
+      let tempRow1 = row1;
+      let tempCol1 = col1;
+      let j = pick99() + 1;
+      for (let q = 0; q < 4; q++) {
+        j += q;
+        j %= 4;
+        if (looking == false) {
+          break;
+        }
+
+        for (let k = 0; k <= boatSize(shipFitCount2); k++) {
+          if (looking == false) {
+            break;
+          }
+
+          if (
+            int(tempRow1 + dirY[j]) < 10 &&
+            int(tempRow1 + dirY[j]) >= 0 &&
+            int(tempCol1 + dirX[j]) < 10 &&
+            int(tempCol1 + dirX[j]) >= 0 &&
+            grid2[int(tempCol1 + dirX[j])][int(tempRow1 + dirY[j])] == 0
+          ) {
+            tempCol1 = int(tempCol1 + dirX[j]);
+            tempRow1 = int(tempRow1 + dirY[j]);
+
+            if (k == boatSize(shipFitCount2) - 1) {
+              if (shipFitCount2 == 0) {
+                setShipCoordinates2(
+                  shipA,
+                  colRowToNum(col1, row1),
+                  dirX[j],
+                  dirY[j]
+                );
+              }
+              if (shipFitCount2 == 1) {
+                setShipCoordinates2(
+                  shipB,
+                  colRowToNum(col1, row1),
+                  dirX[j],
+                  dirY[j]
+                );
+              }
+              if (shipFitCount2 == 2) {
+                setShipCoordinates2(
+                  shipC,
+                  colRowToNum(col1, row1),
+                  dirX[j],
+                  dirY[j]
+                );
+              }
+              if (shipFitCount2 == 3) {
+                setShipCoordinates2(
+                  shipD,
+                  colRowToNum(col1, row1),
+                  dirX[j],
+                  dirY[j]
+                );
+              }
+              if (shipFitCount2 == 4) {
+                setShipCoordinates2(
+                  shipE,
+                  colRowToNum(col1, row1),
+                  dirX[j],
+                  dirY[j]
+                );
+              }
+              shipFitCount2++;
+
+              looking = false;
+            }
+          } //if we can
+        } //for k
+      } //for j
+    } //if spot available
+
+    if (shipFitCount2 == 5) {
+      if (noDups2() == true) {
+        duplicates = false;
+        showShips2 = true;
+      } else {
+        break;
+      }
+    }
+  } //while
+
+  shipFitCount2 = 0;
+} //fsl2
+
+//***************added here**********************
+
+
+
