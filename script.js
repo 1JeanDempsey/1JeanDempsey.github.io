@@ -11,7 +11,7 @@
 * Paste your teachable machine link below
 *
 */
-const URL = "your teachable machine link goes here";
+const URL = "https://teachablemachine.withgoogle.com/models/D05HSVRO6/";
 
 
 
