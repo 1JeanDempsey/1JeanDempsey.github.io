@@ -10,7 +10,7 @@
 //https://teachablemachine.withgoogle.com/models/m8Wm3jRiN/
 
 //https://teachablemachine.withgoogle.com/models/UbP-h3X2h/
-let URL = "https://teachablemachine.withgoogle.com/models/UbP-h3X2h/";
+let URL = "https://teachablemachine.withgoogle.com/models/m8Wm3jRiN/";
 let model, webcam, ctx, labelContainer, maxPredictions;
 
 // Dynamic pose tracking
